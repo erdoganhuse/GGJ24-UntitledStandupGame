@@ -5,7 +5,6 @@ using Library.CoroutineSystem;
 using Library.PersistentData.Scripts;
 using Library.ServiceLocatorSystem;
 using Library.SignalBusSystem;
-using Modules.Gameplay.Signal;
 using UnityEngine;
 
 namespace Modules.Gameplay
@@ -13,7 +12,9 @@ namespace Modules.Gameplay
     public class GameplayController : MonoBehaviour
     {
         private InputController InputController => ServiceLocator.Get<InputController>();
-
+        private HomeScreen HomeScreen => ServiceLocator.Get<HomeScreen>();
+        private GameOverScreen GameOverScreen => ServiceLocator.Get<GameOverScreen>();
+        
         [SerializeField] private Level _testLevelPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private BoxCollider _keyActivationArea;
@@ -24,26 +25,21 @@ namespace Modules.Gameplay
 
         private void Start()
         {
-            InputController.OnKeyPressed += OnInputControllerKeyPressed;
-            
-            StartLevel();
+            OpenHomeScreen();
         }
         
-        private void OnDestroy()
-        {
-            InputController.OnKeyPressed -= OnInputControllerKeyPressed;
-        }
-
         #region Level Management Methods
 
         public void StartLevel()
         {
+            InputController.OnKeyPressed += OnInputControllerKeyPressed;
             _currentSpawnedLevel = Instantiate(_testLevelPrefab, _levelContainer);
             _levelLoopCoroutine = CoroutineManager.BeginCoroutine(LevelLoopCoroutine());
         }
 
         public void EndLevel()
         {
+            InputController.OnKeyPressed -= OnInputControllerKeyPressed;
             Destroy(_currentSpawnedLevel.gameObject);
             CoroutineManager.EndCoroutine(_levelLoopCoroutine);
         }
@@ -70,6 +66,22 @@ namespace Modules.Gameplay
 
         #endregion
         
+        #region UI Methods
+
+        private void OpenHomeScreen()
+        {
+            StartLevel();
+        }
+
+        private void OpenGameOverScreen()
+        {
+            
+        }
+
+        #endregion
+
+        #region Gameplay Methods
+
         private void ProcessKeyPress(InputKeyType inputKey)
         {
             for (int i = _currentSpawnedLevel.Keys.Count - 1; i >= 0; i--)
@@ -104,7 +116,9 @@ namespace Modules.Gameplay
                 Destroy(musicKey.gameObject);
             });
         }
-        
+
+        #endregion
+
         private void OnInputControllerKeyPressed(InputKeyType inputKeyType)
         {
             ProcessKeyPress(inputKeyType);
