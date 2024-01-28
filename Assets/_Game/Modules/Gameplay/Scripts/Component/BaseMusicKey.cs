@@ -1,18 +1,18 @@
 using System;
 using Library.Utility;
-using TMPro;
 using UnityEngine;
 
 namespace Modules.Gameplay
 {
     public class BaseMusicKey : MonoBehaviour
     {
+        public InputKeyType Key => _key;
+        
         [SerializeField] private InputKeyType _key;
-        [SerializeField] private TextMeshPro _text;
         [SerializeField] private MeshRenderer _meshRenderer;
         [SerializeField] private BoxCollider _boxCollider;
 
-        private GameplayConfig GameplayConfig => GameplayConfig.instance;
+        private GameplayConfig GameplayConfig => GameplayConfig.Instance;
         
         public virtual void OnValidate()
         {
@@ -21,6 +21,11 @@ namespace Modules.Gameplay
                 _meshRenderer = transform.GetComponentInChildrenWithName<MeshRenderer>("Visual");
             }
 
+            if (_boxCollider == null)
+            {
+                _boxCollider = transform.GetComponentInChildrenWithName<BoxCollider>("Collider");
+            }
+            
             _meshRenderer.sharedMaterial = GameplayConfig.GetMaterial(_key);
             
             var values = Enum.GetValues(typeof(InputKeyType));
@@ -41,16 +46,6 @@ namespace Modules.Gameplay
         public Bounds GetBounds()
         {
             return _boxCollider.bounds;
-        }
-        
-        public Vector3 GetActivationStartPoint()
-        {
-            return default;
-        }
-
-        public Vector3 GetActivationEndPoint()
-        {
-            return default;
         }
     }
 }

@@ -49,6 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startPoint: {fileID: 546803305186340826}
   _endPoint: {fileID: 5383032411283265818}
+  _keyContainer: {fileID: 4544480076229760788}
+  _keySpeed: 0
+  _keys: []
 --- !u!1 &4176233751729443904
 GameObject:
   m_ObjectHideFlags: 0
