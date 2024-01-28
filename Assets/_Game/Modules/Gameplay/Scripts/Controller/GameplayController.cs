@@ -61,25 +61,13 @@ namespace Modules.Gameplay
                 .SetEase(Ease.Linear)
                 .WaitForCompletion();
             
-            Debug.Log("Level Ended");
+            EndLevel();
+            
+            OpenGameOverScreen();
         }
 
         #endregion
         
-        #region UI Methods
-
-        private void OpenHomeScreen()
-        {
-            StartLevel();
-        }
-
-        private void OpenGameOverScreen()
-        {
-            
-        }
-
-        #endregion
-
         #region Gameplay Methods
 
         private void ProcessKeyPress(InputKeyType inputKey)
@@ -115,6 +103,31 @@ namespace Modules.Gameplay
             {
                 Destroy(musicKey.gameObject);
             });
+        }
+
+        #endregion
+        
+        #region UI Methods
+
+        private void OpenHomeScreen()
+        {
+            HomeScreen.Setup(() =>
+            {
+                HomeScreen.Close();
+                StartLevel();
+            });
+            
+            HomeScreen.Open();
+        }
+
+        private void OpenGameOverScreen()
+        {
+            GameOverScreen.Setup(0, 0, () =>
+            {
+                GameOverScreen.Close();
+                OpenHomeScreen();
+            });
+            GameOverScreen.Open();
         }
 
         #endregion

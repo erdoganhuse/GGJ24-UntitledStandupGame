@@ -1,5 +1,4 @@
 using Library.ServiceLocatorSystem;
-using Modules.UI.Scripts;
 using UnityEngine;
 
 namespace Modules.Gameplay
@@ -16,6 +15,9 @@ namespace Modules.Gameplay
         {
             ServiceLocator.BindInstance(_inputController);
             ServiceLocator.BindInstance(_gameplayController);
+            
+            ServiceLocator.BindInstance(_homeScreen);
+            ServiceLocator.BindInstance(_gameOverScreen);
         }
     }
 }

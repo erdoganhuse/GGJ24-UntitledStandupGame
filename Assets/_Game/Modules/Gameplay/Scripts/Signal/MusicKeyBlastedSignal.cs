@@ -1,6 +1,6 @@
 using Library.SignalBusSystem;
 
-namespace Modules.Gameplay.Signal
+namespace Modules.Gameplay
 {
     public class MusicKeyBlastedSignal : ISignal
     {
