@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Library.SignalBusSystem;
+using Modules.Gameplay;
 
 public class Audience : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public AudioClip[] clips;
+    public AudioSource AudioSourcePrefab;
+
     void Start()
     {
-        
+        SignalBus.Subscribe<MusicKeyBlastedSignal>(OnMusicKeyBlasted);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnMusicKeyBlasted(MusicKeyBlastedSignal signal)
     {
-        
+        var go = Instantiate(AudioSourcePrefab);
+        go.GetComponent<AudioSource>().clip = clips[Random.Range(0,clips.Length)];
+        go.GetComponent<AudioSource>().Play();
     }
 }
