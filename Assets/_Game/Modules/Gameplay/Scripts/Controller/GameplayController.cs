@@ -18,7 +18,8 @@ namespace Modules.Gameplay
         [SerializeField] private Level _testLevelPrefab;
         [SerializeField] private Transform _levelContainer;
         [SerializeField] private BoxCollider _keyActivationArea;
-        
+        [SerializeField] private ParticleSystem _blastParticlePrefab;
+
         private PersistentInt _currentLevelIndex;
         private Level _currentSpawnedLevel;
         private Coroutine _levelLoopCoroutine;
@@ -26,6 +27,7 @@ namespace Modules.Gameplay
         private void Start()
         {
             OpenHomeScreen();
+            _keyActivationArea.gameObject.SetActive(false);
         }
         
         #region Level Management Methods
@@ -35,6 +37,8 @@ namespace Modules.Gameplay
             InputController.OnKeyPressed += OnInputControllerKeyPressed;
             _currentSpawnedLevel = Instantiate(_testLevelPrefab, _levelContainer);
             _levelLoopCoroutine = CoroutineManager.BeginCoroutine(LevelLoopCoroutine());
+
+            _keyActivationArea.gameObject.SetActive(true);
         }
 
         public void EndLevel()
@@ -42,6 +46,8 @@ namespace Modules.Gameplay
             InputController.OnKeyPressed -= OnInputControllerKeyPressed;
             Destroy(_currentSpawnedLevel.gameObject);
             CoroutineManager.EndCoroutine(_levelLoopCoroutine);
+
+            _keyActivationArea.gameObject.SetActive(false);
         }
         
         private IEnumerator LevelLoopCoroutine()
@@ -98,7 +104,15 @@ namespace Modules.Gameplay
         private void BlastMusicKey(BaseMusicKey musicKey)
         {
             SignalBus.Fire(new MusicKeyBlastedSignal(musicKey));
-            
+
+            ParticleSystem blastParticle = Instantiate(_blastParticlePrefab, null);
+            blastParticle.transform.position = musicKey.transform.position + new Vector3(0,0,-1);
+            blastParticle.Play();
+
+            CoroutineManager.DoAfterGivenTime(2f, () =>
+            {
+                Destroy(blastParticle.gameObject);
+            });
             musicKey.transform.DOScale(0.3f, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 Destroy(musicKey.gameObject);

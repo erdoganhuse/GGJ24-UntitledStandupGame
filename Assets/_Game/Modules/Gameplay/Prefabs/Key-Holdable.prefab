@@ -101,9 +101,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _key: 0
-  _text: {fileID: 0}
   _meshRenderer: {fileID: 7875655103531756113}
-  _boxCollider: {fileID: 0}
+  _boxCollider: {fileID: 5065003447150007541}
+--- !u!65 &5065003447150007541 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 4597613424438703876, guid: 7e7420f3ce9954a69b4fd3a1b83f6820,
+    type: 3}
+  m_PrefabInstance: {fileID: 8756265139109176305}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &7875655103531756113 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1499542917385914784, guid: 7e7420f3ce9954a69b4fd3a1b83f6820,
