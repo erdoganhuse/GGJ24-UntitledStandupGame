@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Modules.Gameplay
 {
-    [RequireComponent(typeof(CanvasGroup))]
     public class GameOverScreen : MonoBehaviour
     {
         private CanvasGroup _canvasGroup;
@@ -30,14 +29,12 @@ namespace Modules.Gameplay
 
         public void Open()
         {
-            CanvasGroup.alpha = 1f;
-            CanvasGroup.interactable = true;
+            gameObject.SetActive(true);
         }
 
         public void Close()
         {
-            CanvasGroup.alpha = 0f;
-            CanvasGroup.interactable = false;
+            gameObject.SetActive(false);
         }
 
         public void OnHomeButtonClicked()
